@@ -1,1 +1,1 @@
-# Create your own Virtual Reality with A-frame
+# GraphQL as query language for BFF
