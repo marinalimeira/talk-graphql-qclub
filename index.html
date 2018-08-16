@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>[Talk] GraphQL</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/nu.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/color-brewer.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+				<p class="footer">@marinalimeira_</p>
+				<section data-background-color="#82269E">
+          <h2>GraphQL como query language para BFF</h2>
+        </section>
+
+				<section>
+					<h3>Marina Limeira</h3>
+					<p>Engenheira de Software @ Nubank</p>
+					<a href="www.marinalimeira.com" class="purple-link">marinalimeira.com</a>
+				</section>
+
+				<section data-background-image="images/products.png" class="left">
+					<h3>Cartão</h3>
+					<h3>NuConta</h3>
+					<h3>Rewards</h3>
+				</section>
+
+				<section>
+					<img class="stack" src="images/clojure-logo.png" />
+					<img class="stack" src="images/datomic-logo.png" />
+					<img class="stack" src="images/kafka-logo.png" />
+          <img class="stack" src="images/cljs-logo.png" /></br>
+          <img class="stack" src="images/android-logo.png" />
+          <img class="stack" src="images/ios-logo.png" />
+					<img class="stack" src="images/react-logo.png" />
+					<img class="stack" src="images/graphql-logo.png" />
+				</section>
+
+				<section>
+					<h2>micro-serviços 💜</h2>
+					<img src="images/microsservices.png" />
+				</section>
+
+				<section>
+          <h2>micro-serviços 💔</h2>
+          <img src="images/microsservices-wout-bff.png" height=400 />
+				</section>
+          
+        <section>
+          <h2>Backend for front-end (bff)</h2>
+          <img src="images/microsservices-w-bff.png" height=400 />
+        </section>
+
+        <section>
+          <h2 class="purple">Backend for front-end (bff)</h2>
+          <p>Abrams (Shuffle - backoffice)</p>
+          <p>Shore (Shell - novo app)</p>
+        <p>Stormshield (Ghostflame - Nuconta)</p>
+        </section>
+
+        <section>
+          <h2>Queries</h2>
+        </section>
+
+				<section>
+          <h2>Queries</h2>
+          <pre>
+            <code data-trim data-noescape>
+query {
+  customer {
+    id
+    savingsAccount {
+      id
+      branch
+      number
+      checkDigit
+    }
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+
+        <section>
+          <h2>Queries</h2>
+          <pre>
+            <code data-trim data-noescape class="json">
+{
+  "data": {
+    "customer": {
+      "id": "3a7ac861-0814-4e53-8df9-4bae02d309ba",
+      "savingsAccount": {
+        "id": "afe0a604-fba9-4d06-bc81-278494618c55",
+        "branch": 0001,
+        "number": 12345,
+        "checkDigit": 6,
+      }
+    }
+  }
+}
+              </code>
+          </pre>
+        </section>
+
+        <section>
+          <h2>Resolvers</h2>
+          <pre>
+            <code data-trim data-noescape>
+  (def skeleton
+    {:SavingsAccount {:id          {:type :Uuid}
+                      :branch      {:type :Int}
+                      :number      {:type :Int}
+                      :check-digit {:type :Int}
+     :Customer {:id             {:type :Uuid}
+                :savingsAccount {:type :SavingsAccount
+                                 :resolve :get-savings-account}})
+  (def queries-resolver
+    {:get-savings-account get-savings-account})
+
+  (defn get-savings-account [context customer _])
+            </code>
+          </pre>
+        </section>
+
+        <section data-background-color="#82269E">
+          <h2>Obrigada!</h2>
+          <h3><a style="color: white">sou.nu/vagasnu</a></h3>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+        transition: 'fade',
+        backgroundTransition: 'fade',
+        history: true,
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>
